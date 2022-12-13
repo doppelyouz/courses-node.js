@@ -42,10 +42,11 @@ class Card {
         
         const ind = card.courses.findIndex(c => c.id === id);
         const course = card.courses[ind];
+        
         if(course.count === 1) {
             card.courses = card.courses.filter(c => c.id !== id);
         } else {
-            course.courses[ind].count--;
+            card.courses[ind].count--;
         }
         card.price -= course.price;
 
