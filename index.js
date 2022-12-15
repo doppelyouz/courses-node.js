@@ -23,7 +23,6 @@ const hbs = exphbs.create({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
   });
 
-
 app.use(async (req,res,next)=>{
     try {
         const user = await User.findById('639a124da224e3efaf7b0af8');
