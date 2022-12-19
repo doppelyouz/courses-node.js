@@ -4,6 +4,7 @@ const path = require("path");
 const session = require('express-session');
 
 const mongoose = require("mongoose");
+const MongoStore = require('connect-mongodb-session')(session);
 
 const varMiddleware = require('./middleware/variables');
 
@@ -29,6 +30,13 @@ const hbs = exphbs.create({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 });
 
+const MONGODB_URI = `mongodb+srv://doppelyouz:sdGHhSL4Mnb6mZqv@cluster0.tt7avdq.mongodb.net/shop`;
+
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: MONGODB_URI
+})
+
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
@@ -39,7 +47,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(session({
     secret: 'some secret value',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store 
 }));
 
 app.use(varMiddleware);
@@ -57,19 +66,9 @@ mongoose.set('strictQuery', false);
 
 async function start() {
     try {
-        const url = `mongodb+srv://doppelyouz:sdGHhSL4Mnb6mZqv@cluster0.tt7avdq.mongodb.net/shop`;
-        await mongoose.connect(url, {
+        await mongoose.connect(MONGODB_URI, {
             useNewUrlParser:true
         });
-        // const candidate = await User.findOne();
-        // if(!candidate) {
-        //     const newUser = new User({
-        //         email:"azamatryssalievyouz@gmail.com",
-        //         name:"Azamat",
-        //         cart: {items:[]}
-        //     })
-        //     await newUser.save();
-        // }
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         })
