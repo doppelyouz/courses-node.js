@@ -1,7 +1,11 @@
 const express = require('express');
 const path = require("path");
 
+const session = require('express-session');
+
 const mongoose = require("mongoose");
+
+const varMiddleware = require('./middleware/variables');
 
 const exphbs = require('express-handlebars');
 
@@ -41,6 +45,14 @@ app.set('views', 'views');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));
+
+app.use(session({
+    secret: 'some secret value',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(varMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/add', addRoutes)
