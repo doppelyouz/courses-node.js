@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const MongoStore = require('connect-mongodb-session')(session);
 
 const varMiddleware = require('./middleware/variables');
+const userMiddleware = require('./middleware/user');
 
 const exphbs = require('express-handlebars');
 
@@ -30,7 +31,7 @@ const hbs = exphbs.create({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 });
 
-const MONGODB_URI = `mongodb+srv://doppelyouz:sdGHhSL4Mnb6mZqv@cluster0.tt7avdq.mongodb.net/shop`;
+const MONGODB_URI = `mongodb+srv://doppelyouz:daneka18@cluster0.tt7avdq.mongodb.net/shop`;
 
 const store = new MongoStore({
     collection: 'sessions',
@@ -52,6 +53,7 @@ app.use(session({
 }));
 
 app.use(varMiddleware);
+app.use(userMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/add', addRoutes)
