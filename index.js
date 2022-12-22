@@ -10,6 +10,7 @@ const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
 
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const exphbs = require('express-handlebars');
 
@@ -52,6 +53,7 @@ app.use(session({
     store 
 }));
 
+app.use(flash());
 app.use(csrf());
 app.use(varMiddleware);
 app.use(userMiddleware);
