@@ -11,6 +11,12 @@
       <form action="/auth/login" method="post">
 
         <div class="input-field">
+          <input id="name" name="name" type="text" class="validate" required />
+          <label for="name">Ваше имя</label>
+          <span class="helper-text" data-error="Введите имя"></span>
+        </div>
+
+        <div class="input-field">
           <input id="email" name="email" type="email" class="validate" required />
           <label for="email">Email</label>
           <span class="helper-text" data-error="Введите email"></span>
