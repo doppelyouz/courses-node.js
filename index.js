@@ -9,6 +9,8 @@ const MongoStore = require('connect-mongodb-session')(session);
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
 
+const csrf = require('csurf');
+
 const exphbs = require('express-handlebars');
 
 const Handlebars = require('handlebars')
@@ -20,8 +22,6 @@ const coursesRoutes = require('./routes/course');
 const addRoutes = require('./routes/add');
 const orderRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
-
-const User = require('./models/user');
 
 const app = express();
 
@@ -52,6 +52,7 @@ app.use(session({
     store 
 }));
 
+app.use(csrf());
 app.use(varMiddleware);
 app.use(userMiddleware);
 

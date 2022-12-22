@@ -19,6 +19,8 @@
           <a href="/courses/{{id}}/edit?allow=true">Редактировать курс</a>
           <form action="/card/add" method="post">
             <input type="hidden" name="id" value="{{id}}">
+            <input name="_csrf" type="hidden" value="{{@root.csrf}}" />
+            
             <button type="submit" class="btn btn-primary">Купить</button>
           </form>
           {{/if}}
