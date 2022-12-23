@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require("path");
 
+const keys = require('./keys')
+
 const session = require('express-session');
 
 const mongoose = require("mongoose");
@@ -32,11 +34,9 @@ const hbs = exphbs.create({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 });
 
-const MONGODB_URI = `mongodb+srv://doppelyouz:daneka18@cluster0.tt7avdq.mongodb.net/shop`;
-
 const store = new MongoStore({
     collection: 'sessions',
-    uri: MONGODB_URI
+    uri: keys.MONGODB_URI
 })
 
 app.engine('hbs', hbs.engine);
@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));
 
 app.use(session({
-    secret: 'some secret value',
+    secret: keys.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store 
@@ -71,7 +71,7 @@ mongoose.set('strictQuery', false);
 
 async function start() {
     try {
-        await mongoose.connect(MONGODB_URI, {
+        await mongoose.connect(keys.MONGODB_URI, {
             useNewUrlParser:true
         });
         app.listen(PORT, () => {
