@@ -1,7 +1,17 @@
 const {Router} = require('express');
 const router = Router();
+
+const keys = require('../keys');
+const regEmail = require('../emails/registration');
+
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+
+const UniSender = require('unisender');   
+const uniSender = new UniSender({     
+    api_key: keys.UNISENDER_API_KEY,  
+    lang: 'ru'               
+});
 
 router.get('/login', async (req, res) => {
     res.render('auth/login', {
@@ -64,6 +74,10 @@ router.post('/register', async (req,res) => {
 
             await user.save();
             res.redirect('/auth/login#login');
+            await uniSender.sendEmail(regEmail(email)).then(function (response) {
+                console.log('Message id: ' + response.result.message_id);
+            }).catch(function (response) {
+                console.log('Error:' + response.error);});;
         }
     } catch(e) {
         console.log(e);
